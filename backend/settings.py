@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
+     'oauth2_provider',
 #     'rest_auth',
 # #for social login
 #      'django.contrib.sites',
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
 #      'allauth.socialaccount.providers.facebook',
 #      'allauth.socialaccount.providers.google',
 ]
+AUTH_USER_MODEL = "api.User"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -88,7 +90,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'projectmanagementapp1',
+        'NAME':'projectmanagementapp2',
         'USER':'root',
         'PASSWORD':'dhruv12345',
         'PORT':3306,
