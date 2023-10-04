@@ -59,7 +59,7 @@ class GetUserDataView(APIView):
         if not access_token:
             return Response({'error': 'Access token is missing'}, status=400)
 
-        # Make a GET request to get user data
+       
         user_data_url = 'https://channeli.in/open_auth/get_user_data/'
         headers = {'Authorization': f'Bearer {access_token}'}
 
@@ -67,10 +67,20 @@ class GetUserDataView(APIView):
 
         if response.status_code == 200:
             user_data = response.json()
-            # Process the user data as needed
+            # username=user_data["contactInformation"["emailAddress"]]
+            # print(username)
+            
+            # existing_user =models.Users.objects.filter(username=username).first()
+            # if(existing_user):
+            #     existing_user.name=user_data['fullName']
+            #     existing_user.email=user_data["contactInformation"["emailAddress"]]
+            #     existing_user.username=user_data['username']
+
+                
+
             return Response({'message': 'User data retrieved successfully', 'data': user_data})
         else:
-            # Handle the case where data retrieval failed
+           
             return Response({'error': 'Failed to retrieve user data'}, status=response.status_code)
 
 
@@ -92,3 +102,23 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserDetailsSerializer
     lookup_field = 'user_id'
+
+
+
+class ProjectList(generics.ListCreateAPIView):
+     queryset = models.Project.objects.all()
+     serializer_class = serializers.ProjectSerializer
+
+
+
+class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectDetailsSerializer
+    lookup_field = 'project_id'
+
+class UserProjectListView(generics.ListAPIView):
+    serializer_class=serializers.ProjectDetailsSerializer
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        return models.Project.objects.filter(creator_id=user_id)
+    
