@@ -8,9 +8,13 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
+
 """
 
 from pathlib import Path
+from decouple import config
+
+# import hashlibpyth
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
      'oauth2_provider',
+     'corsheaders',
 #     'rest_auth',
 # #for social login
 #      'django.contrib.sites',
@@ -142,8 +147,32 @@ LOGIN_URL='/admin/login/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-REST_FRAMEWORK={
-    'DEFAULT_PERMISSION_CLASSES':[
-        'rest_framework.permissions.IsAuthenticated',
-    ]
+
+# REST_FRAMEWORK={
+#     'DEFAULT_PERMISSION_CLASSES':[
+#         'rest_framework.permissions.IsAuthenticated',
+#     ]
+# }
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 3600,
+    'AUTHORIZATION_CODE_EXPIRE_SECONDS': 3600,
+    'SCOPES': {
+        'read': 'Read access',
+        'write': 'Write access',
+    },
 }
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
+}
+
+AUTHENTICATION_CLASSES = (
+    'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    # ...
+)
+OAUTH2_CLIENT_ID = config('OAUTH2_CLIENT_ID')
+OAUTH2_CLIENT_SECRET = config('OAUTH2_CLIENT_SECRET')
+
+OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/auth/callback/'
+

@@ -26,6 +26,7 @@ class Project(models.Model):
     is_visible = models.BooleanField(default=True)
     project_link = models.URLField(max_length=200, blank=True, null=True)
     github_link = models.URLField(max_length=200, blank=True, null=True)
+    is_completed = models.BooleanField(default=False) 
 
     def __str__(self):
         return self.name
@@ -85,5 +86,5 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'Comment by {self.user.username} on Card {self.card.name}'
+        return f'Comment by {self.user.username} on Card NAME {self.card.card_name}'
 
