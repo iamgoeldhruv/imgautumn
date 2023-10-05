@@ -67,15 +67,33 @@ class GetUserDataView(APIView):
 
         if response.status_code == 200:
             user_data = response.json()
-            # username=user_data["contactInformation"["emailAddress"]]
-            # print(username)
+            username=user_data['username']
+            name=user_data['person']['fullName']
+            words = name.split()
+            email=user_data['contactInformation']['emailAddress']
+            year=user_data['student']['currentYear']
+            profile_pic=user_data['person']['displayPicture']
+            print(email)
+            print(words[0])
+            print(words[1])
             
-            # existing_user =models.Users.objects.filter(username=username).first()
-            # if(existing_user):
-            #     existing_user.name=user_data['fullName']
-            #     existing_user.email=user_data["contactInformation"["emailAddress"]]
-            #     existing_user.username=user_data['username']
+            existing_users = models.User.objects.filter(username=username)
+            if(not existing_users):
+                new_user=models.User.objects.create(
+                    first_name=words[0],
+                    last_name=words[1],
+                    username=username,
+                    email=email,
+                    year=year,
+                    profile_pic=profile_pic
 
+
+
+                )
+                new_user.save()
+            else:
+                print('user already exist')
+                
                 
 
             return Response({'message': 'User data retrieved successfully', 'data': user_data})
