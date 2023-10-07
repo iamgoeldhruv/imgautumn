@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 import requests
 from django.http import request
+from rest_framework.authtoken.models import Token
 
 
 from rest_framework.views import APIView
@@ -14,6 +15,12 @@ from backend import settings
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponse, HttpResponseRedirect
 import requests
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 # Create your views here.
 class OAuthAuthorizeView(APIView):
     def get(self, request):
@@ -91,12 +98,13 @@ class GetUserDataView(APIView):
 
                 )
                 new_user.save()
-            else:
+            else: 
                 print('user already exist')
                 
+            
                 
 
-            return Response({'message': 'User data retrieved successfully', 'data': user_data})
+            return Response({'message': 'User data retrieved successfully', 'data': user_data ,})
         else:
            
             return Response({'error': 'Failed to retrieve user data'}, status=response.status_code)
@@ -139,4 +147,5 @@ class UserProjectListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return models.Project.objects.filter(creator_id=user_id)
+    
     

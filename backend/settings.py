@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
      'oauth2_provider',
-     'corsheaders',
+    
+    
 #     'rest_auth',
 # #for social login
 #      'django.contrib.sites',
@@ -163,7 +164,7 @@ OAUTH2_PROVIDER = {
 }
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.TokenAuthentication',
     ),
 }
 
