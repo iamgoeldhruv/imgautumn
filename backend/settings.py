@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
      'oauth2_provider',
+     'corsheaders',
     
     
 #     'rest_auth',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "api.User"
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -176,4 +178,7 @@ OAUTH2_CLIENT_ID = config('OAUTH2_CLIENT_ID')
 OAUTH2_CLIENT_SECRET = config('OAUTH2_CLIENT_SECRET')
 
 OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/auth/callback/'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
 
