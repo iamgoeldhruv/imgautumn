@@ -121,7 +121,8 @@ class GetUserDataView(APIView):
 class UserList(generics.ListCreateAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
-    # permission_classes=[permissions.IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
