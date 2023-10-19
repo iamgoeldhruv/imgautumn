@@ -181,4 +181,6 @@ OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000/auth/callback/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+# APPEND_SLASH = True
+
 

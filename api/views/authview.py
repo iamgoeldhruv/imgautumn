@@ -1,26 +1,16 @@
 from django.shortcuts import render
-
 from api import models
 from django.shortcuts import redirect
-from django.urls import reverse
 import requests
-from django.http import request
-from api import serializers
-from rest_framework import generics,permissions
-
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from backend import settings
-from django.http import HttpResponse, HttpResponseRedirect
-from django.http import HttpResponse, HttpResponseRedirect
 import requests
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.permissions import IsAuthenticated
-from django.conf import settings
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from rest_framework import status
+from django.http import HttpResponseRedirect
+
+
 
 # Create your views here.
 class OAuthAuthorizeView(APIView):
@@ -28,14 +18,13 @@ class OAuthAuthorizeView(APIView):
        
         state = 'success'
         print(settings.OAUTH2_CLIENT_ID)
-
-
-        # Build the authorization URL
         authorization_url = f'https://channeli.in/oauth/authorise/?client_id={settings.OAUTH2_CLIENT_ID}&redirect_uri={settings.OAUTH2_REDIRECT_URI}&state={state}'
         print(authorization_url)
-       
-       
         return redirect(authorization_url)
+    
+
+
+    
 class oauth2_callback(APIView):
     def get(self, request):
         code = request.GET.get('code')
@@ -74,38 +63,50 @@ class GetUserDataView(APIView):
         response = requests.get(user_data_url, headers=headers)
 
         if response.status_code == 200:
+
             user_data = response.json()
+            role=user_data['person']['roles'][1]['role']
             username=user_data['username']
             name=user_data['person']['fullName']
             words = name.split()
             email=user_data['contactInformation']['emailAddress']
             year=user_data['student']['currentYear']
             profile_pic=user_data['person']['displayPicture']
-            print(email)
-            print(words[0])
-            print(words[1])
-            
-            existing_users = models.User.objects.filter(username=username)
-            if(not existing_users):
-                new_user=models.User.objects.create(
-                    first_name=words[0],
-                    last_name=words[1],
-                    username=username,
-                    email=email,
-                    year=year,
-                    profile_pic=profile_pic
-
-
-
-                )
-                new_user.save()
-            else: 
-                print('user already exist')
-                
-            
-                
-
-            return Response({'message': 'User data retrieved successfully', 'data': user_data ,})
-        else:
+            if(role=='Maaintainer'):
            
-            return Response({'error': 'Failed to retrieve user data'}, status=response.status_code)
+                
+                existing_users = models.User.objects.filter(username=username)
+                
+                if(not existing_users):
+                    new_user=models.User.objects.create(
+                        first_name=words[0],
+                        last_name=words[1],
+                        username=username,
+                        email=email,
+                        year=year,
+                        profile_pic=profile_pic
+
+
+
+                    )
+                    new_user.save()
+                    
+                else: 
+                    print('user already exist')
+                existing_users1 = models.User.objects.get(username=username)
+                token,created=Token.objects.get_or_create(user=existing_users1)
+                print(token.key)
+                authToken=token.key
+                response = HttpResponseRedirect('http://localhost:3000/dashboard')
+                # response.set_cookie('authtoken', authToken, max_age=None, secure=True, httponly=True, samesite='Lax')
+                return response
+                # return HttpResponseRedirect('http://localhost:3000',status==403)
+                    
+                
+            else:
+                return HttpResponseRedirect('http://localhost:3000',status==403)
+        else:
+            
+            return HttpResponseRedirect('http://localhost:3000',status==451)
+            
+            
