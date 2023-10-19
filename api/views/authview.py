@@ -72,7 +72,7 @@ class GetUserDataView(APIView):
             email=user_data['contactInformation']['emailAddress']
             year=user_data['student']['currentYear']
             profile_pic=user_data['person']['displayPicture']
-            if(role=='Maaintainer'):
+            if(role=='Maintainer'):
            
                 
                 existing_users = models.User.objects.filter(username=username)
@@ -97,14 +97,16 @@ class GetUserDataView(APIView):
                 token,created=Token.objects.get_or_create(user=existing_users1)
                 print(token.key)
                 authToken=token.key
-                response = HttpResponseRedirect('http://localhost:3000/dashboard')
-                # response.set_cookie('authtoken', authToken, max_age=None, secure=True, httponly=True, samesite='Lax')
+                userId=existing_users1.user_id
+                userName=existing_users1.username
+                response = HttpResponseRedirect('http://localhost:3000/?auth_token=' + authToken + '&userid=' + str(userId) + '&username=' + userName)
+
+               
                 return response
-                # return HttpResponseRedirect('http://localhost:3000',status==403)
-                    
+               
                 
             else:
-                return HttpResponseRedirect('http://localhost:3000',status==403)
+                return HttpResponseRedirect('http://localhost:3000/')
         else:
             
             return HttpResponseRedirect('http://localhost:3000',status==451)
