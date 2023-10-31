@@ -14,3 +14,5 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+    # def creator_name(self):
+    #     return self.creator.name

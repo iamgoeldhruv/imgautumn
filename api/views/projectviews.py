@@ -34,9 +34,12 @@ class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectDetailsSerializer
     lookup_field = 'project_id'
+  
+    
 
 class UserProjectListView(generics.ListAPIView):
     serializer_class=serializers.ProjectDetailsSerializer
+   
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return models.Project.objects.filter(creator_id=user_id)

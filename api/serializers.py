@@ -13,6 +13,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
         fields = ('user_id', 'username', 'role', 'year', 'profile_pic')
 
 class ProjectSerializer(serializers.ModelSerializer):
+    creator=serializers.CharField(source='creator.username', read_only=True)
     class Meta:
         model = models.Project
         fields = '__all__'
@@ -20,7 +21,7 @@ class ProjectSerializer(serializers.ModelSerializer):
 class ProjectDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
-        fields = ('project_id', 'creator', 'date_of_creation', 'name', 'wiki','description','is_visible','project_link','github_link','is_completed')
+        fields =  '__all__'
 
 
 

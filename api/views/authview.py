@@ -19,7 +19,7 @@ class OAuthAuthorizeView(APIView):
         state = 'success'
         print(settings.OAUTH2_CLIENT_ID)
         authorization_url = f'https://channeli.in/oauth/authorise/?client_id={settings.OAUTH2_CLIENT_ID}&redirect_uri={settings.OAUTH2_REDIRECT_URI}&state={state}'
-        print(authorization_url)
+        
         return redirect(authorization_url)
     
 
