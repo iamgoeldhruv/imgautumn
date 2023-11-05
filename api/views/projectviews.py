@@ -28,9 +28,11 @@ from rest_framework.authtoken.models import Token
 class ProjectList(generics.ListCreateAPIView):
      queryset = models.Project.objects.all()
      serializer_class = serializers.ProjectSerializer
+     authentication_classes=[TokenAuthentication]
+     permission_classes=[IsAuthenticated]
 
 
-class ProjectDetailView(generics.RetrieveUpdateDestroyAPIView):
+class ProjectDetailView(generics.RetrieveAPIView):
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectDetailsSerializer
     lookup_field = 'project_id'
@@ -43,3 +45,20 @@ class UserProjectListView(generics.ListAPIView):
     def get_queryset(self):
         user_id = self.kwargs['user_id']
         return models.Project.objects.filter(creator_id=user_id)
+    
+class CreateProjectView(generics.CreateAPIView):
+    serializer_class = serializers.CreateProjectSerializer
+    authentication_classes=[TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        project_name = request.data.get('name')
+        existing_project = models.Project.objects.filter(name=project_name).first()
+
+        if existing_project:
+            return 
+        return super(CreateProjectView, self).create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+     
+        serializer.save(creator=self.request.user)

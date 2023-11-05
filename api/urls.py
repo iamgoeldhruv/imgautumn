@@ -13,4 +13,5 @@ urlpatterns = [
     path('api/projects/', views.projectviews.ProjectList.as_view(),),
     path('api/project/<int:project_id>/', views.projectviews.ProjectDetailView.as_view(), name='project-detail'),
     path('api/user/<int:user_id>/projects/', views.projectviews.UserProjectListView.as_view(), name='user-projects-list'),
+    path('api/create_project/', views.projectviews.CreateProjectView.as_view(), name='create_project'),
 ] 

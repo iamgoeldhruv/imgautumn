@@ -18,6 +18,13 @@ class ProjectSerializer(serializers.ModelSerializer):
         model = models.Project
         fields = '__all__'
 
+
+class CreateProjectSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = models.Project
+        fields = ('creator','name','description','wiki','github_link','date_of_creation','is_visible')
+
 class ProjectDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
