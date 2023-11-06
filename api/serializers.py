@@ -31,4 +31,10 @@ class ProjectDetailsSerializer(serializers.ModelSerializer):
         fields =  '__all__'
 
 
+class ListsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Lists
+        fields = '__all__'
+
+
 

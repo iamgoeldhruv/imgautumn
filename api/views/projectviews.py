@@ -6,6 +6,7 @@ import requests
 from django.http import request
 from api import serializers
 from rest_framework import generics,permissions
+from rest_framework import status
 
 
 from rest_framework.views import APIView
@@ -56,8 +57,13 @@ class CreateProjectView(generics.CreateAPIView):
         existing_project = models.Project.objects.filter(name=project_name).first()
 
         if existing_project:
-            return 
-        return super(CreateProjectView, self).create(request, *args, **kwargs)
+            return Response({'detail': 'Project with this name already exists.'}, status=status.HTTP_400_BAD_REQUEST) 
+        serializer=self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        created_project = serializer.instance
+        response_data = {'id': created_project.project_id, 'detail': 'Project created successfully.'}
+        return Response(response_data, status=status.HTTP_201_CREATED)
 
     def perform_create(self, serializer):
      

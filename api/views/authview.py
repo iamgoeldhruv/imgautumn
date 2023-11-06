@@ -66,13 +66,13 @@ class GetUserDataView(APIView):
 
             user_data = response.json()
             role=user_data['person']['roles'][1]['role']
-            # role='student'
             username=user_data['username']
             name=user_data['person']['fullName']
             words = name.split()
             email=user_data['contactInformation']['emailAddress']
             year=user_data['student']['currentYear']
             profile_pic=user_data['person']['displayPicture']
+            print(words)
             if(role=='Maintainer'):
            
                 
