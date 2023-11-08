@@ -10,7 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.User
-        fields = ('user_id', 'username', 'role', 'year', 'profile_pic')
+        fields = '__all__'
 
 class ProjectSerializer(serializers.ModelSerializer):
     creator=serializers.CharField(source='creator.username', read_only=True)
@@ -35,6 +35,11 @@ class ListsSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Lists
         fields = '__all__'
+
+class ProjectMembersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ProjectMembers
+        fields = ['user', 'project']
 
 
 
