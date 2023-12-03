@@ -43,3 +43,13 @@ class ProjectMembersSerializer(serializers.ModelSerializer):
 
 
 
+
+
+class ListsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Lists
+        fields = ['list_id', 'list_name', 'project']
+
+
+
+

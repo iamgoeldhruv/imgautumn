@@ -24,57 +24,22 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
+class ListsInProjectView(generics.ListCreateAPIView):
+    serializer_class = serializers.ListsSerializer
 
-class Listslist(APIView):
-    authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated]
-    def get(self, request, project_id):
-        lists = models.Lists.objects.filter(project__project_id=project_id)
-        serializer = serializers.ListsSerializer(lists, many=True)
-        return Response(serializer.data)
-    
+    def get_queryset(self):
+        project_id = self.kwargs.get('project_id')
+        return models.Lists.objects.filter(project__project_id=project_id)
 
-    def post(self, request, project_id):
-        serializer = serializers.ListsSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(project_id=project_id)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+    def perform_create(self, serializer):
+        project_id = self.kwargs.get('project_id')
+        project = models.Project.objects.get(project_id=project_id)
+        serializer.save(project=project)
 
 
 
-class ListsDetail(APIView):
-    authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated]
-    def get(self, request, list_id):
-        try:
-            lists = models.Lists.objects.get(list_id=list_id)
-        except models.Lists.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = serializers.ListsSerializer(lists)
-        return Response(serializer.data)
 
-    def put(self, request, list_id):
-        try:
-            lists = models.Lists.objects.get(list_id=list_id)
-        except models.Lists.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
 
-        serializer = serializers.ListsSerializer(lists, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, list_id):
-        try:
-            lists = models.Lists.objects.get(list_id=list_id)
-        except models.Lists.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
-
-        lists.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
