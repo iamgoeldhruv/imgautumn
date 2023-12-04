@@ -24,17 +24,41 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
-class ListsInProjectView(generics.ListCreateAPIView):
+
+class ListsInProjectView(generics.ListAPIView):
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
     serializer_class = serializers.ListsSerializer
 
     def get_queryset(self):
-        project_id = self.kwargs.get('project_id')
-        return models.Lists.objects.filter(project__project_id=project_id)
+        
+        project_id = self.kwargs['project_id']
+        
+        
+        queryset = models.Lists.objects.filter(project__project_id=project_id)
+        
+        return queryset
+    
+class CreateListView(generics.CreateAPIView):
+    serializer_class = serializers.ListsSerializer
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
 
     def perform_create(self, serializer):
+        
         project_id = self.kwargs.get('project_id')
         project = models.Project.objects.get(project_id=project_id)
+        
+      
         serializer.save(project=project)
+
+    def create(self, request, *args, **kwargs):
+       
+        response = super().create(request, *args, **kwargs)
+        project_id = self.kwargs.get('project_id')
+        response.data['project_id'] = project_id
+        return response
+
 
 
 
