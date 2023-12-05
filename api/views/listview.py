@@ -8,8 +8,6 @@ from django.http import request
 from api import serializers
 from rest_framework import generics,permissions
 from rest_framework import status
-
-
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from backend import settings
@@ -58,6 +56,18 @@ class CreateListView(generics.CreateAPIView):
         project_id = self.kwargs.get('project_id')
         response.data['project_id'] = project_id
         return response
+    
+
+class UpdateDeleteListView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = models.Lists.objects.all()
+    serializer_class = serializers.ListsSerializer
+    permission_classes = [IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+
+    def get_object(self):
+        
+        list_id = self.kwargs.get('list_id')
+        return models.Lists.objects.get(list_id=list_id)
 
 
 

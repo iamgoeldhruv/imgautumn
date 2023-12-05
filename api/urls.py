@@ -18,4 +18,6 @@ urlpatterns = [
     path('project-members/<int:project_id>/', views.memberview.ProjectMembersListView.as_view(), name='project-members'),
     path('api/lists/<int:project_id>/', views.listview.ListsInProjectView.as_view(), name='lists-in-project'),
     path('api/project/<int:project_id>/create_list/', views.listview.CreateListView.as_view(), name='create-list'),
+    path('api/list/<int:list_id>/', views.listview.UpdateDeleteListView.as_view(), name='update-delete-list'),
+     path('api/cards/<int:list_id>/',views.cardview.CardDetailsInListView.as_view(), name='card-list'),
 ]
