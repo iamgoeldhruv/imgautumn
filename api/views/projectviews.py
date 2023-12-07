@@ -62,6 +62,8 @@ class CreateProjectView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         created_project = serializer.instance
+        
+        models.ProjectMembers.objects.create(user=request.user,project=created_project)
         response_data = {'id': created_project.project_id, 'detail': 'Project created successfully.'}
         return Response(response_data, status=status.HTTP_201_CREATED)
 

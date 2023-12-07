@@ -31,7 +31,7 @@ class ProjectMembersCreateView(generics.CreateAPIView):
     
 
 class ProjectMembersListView(generics.ListAPIView):
-    serializer_class = serializers.ProjectMembersSerializer
+    serializer_class = serializers.ViewProjectMembersSerializer
 
     def get_queryset(self):
         project_id = self.kwargs['project_id']

@@ -37,6 +37,7 @@ class ListsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ProjectMembersSerializer(serializers.ModelSerializer):
+    # user = UserSerializer()  
     class Meta:
         model = models.ProjectMembers
         fields = ['user', 'project']
@@ -60,3 +61,9 @@ class CardDetailsSerializer(serializers.ModelSerializer):
 
 
 
+class ViewProjectMembersSerializer(serializers.ModelSerializer):
+    user = UserSerializer()  
+
+    class Meta:
+        model = models.ProjectMembers
+        fields = ['user', 'project']  
