@@ -31,3 +31,13 @@ class CardDetailsInListView(generics.ListAPIView):
         list_id=self.kwargs['list_id']
         queryset=models.CardDetails.objects.filter(list_id=list_id)
         return queryset
+
+
+class CreateCardDetailsView(generics.CreateAPIView):
+    queryset = models.CardDetails.objects.all()
+    serializer_class = serializers.CardDetailsSerializer
+
+    def perform_create(self, serializer):
+      
+        list_id = self.kwargs.get('list_id')
+        serializer.save(list_id=list_id)

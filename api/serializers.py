@@ -53,10 +53,10 @@ class ListsSerializer(serializers.ModelSerializer):
 
 
 class CardDetailsSerializer(serializers.ModelSerializer):
-    assignee_details = UserDetailsSerializer(many=True, read_only=True)
+    
     class Meta:
         model = models.CardDetails
-        fields = ['id', 'list_id', 'card_name', 'description', 'assignee', 'assignee_details', 'date_of_creation', 'deadline', 'priority', 'attachments', 'color']
+        fields = '__all__'
 
 
 
