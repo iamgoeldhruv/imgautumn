@@ -36,8 +36,8 @@ class CardDetailsInListView(generics.ListAPIView):
 class CreateCardDetailsView(generics.CreateAPIView):
     queryset = models.CardDetails.objects.all()
     serializer_class = serializers.CardDetailsSerializer
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
 
     def perform_create(self, serializer):
-      
-        list_id = self.kwargs.get('list_id')
-        serializer.save(list_id=list_id)
+        serializer.save()
