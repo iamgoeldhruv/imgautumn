@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 class ProjectMembersCreateView(generics.CreateAPIView):
     queryset = models.ProjectMembers.objects.all()
     serializer_class = serializers.ProjectMembersSerializer
-    authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated]
+    # authentication_classes=[TokenAuthentication]
+    # permission_classes=[IsAuthenticated]
 
 
     def create(self, request, *args, **kwargs):
@@ -36,3 +36,15 @@ class ProjectMembersListView(generics.ListAPIView):
     def get_queryset(self):
         project_id = self.kwargs['project_id']
         return models.ProjectMembers.objects.filter(project=project_id)
+    
+
+class UserProjectsView(generics.ListAPIView):
+    def get(self, request, user_id, format=None):
+        try:
+            projects = models.ProjectMembers.objects.filter(user_id=user_id)
+            serializer = serializers.ProjectMembers1Serializer(projects, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except models.ProjectMembers.DoesNotExist:
+            return Response({"message": "User not found or not a member of any projects"}, status=status.HTTP_404_NOT_FOUND)
+
+
