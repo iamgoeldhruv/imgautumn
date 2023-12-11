@@ -21,6 +21,8 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from api.permissions import IsProjectMemberPermission 
+
 
 
 
@@ -28,7 +30,7 @@ class UserList(generics.ListCreateAPIView):
     queryset = models.User.objects.all()
     serializer_class = serializers.UserSerializer
     authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated,IsProjectMemberPermission]
 
 
 class UserDetailView(generics.RetrieveUpdateDestroyAPIView):

@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+# from decouple import config
 from decouple import config
+
 
 # import hashlibpyth
 
@@ -35,6 +37,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
+    'channels',
     'api.apps.ApiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,8 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-     'oauth2_provider',
-     'corsheaders',
+    'oauth2_provider',
+    'corsheaders',
     
     
 #     'rest_auth',
@@ -66,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
+    
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -89,7 +94,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+# WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 # Database
@@ -182,5 +187,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 # APPEND_SLASH = True
+
+ASGI_APPLICATION = "backend.asgi.application"
 
 

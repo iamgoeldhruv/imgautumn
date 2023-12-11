@@ -20,12 +20,14 @@ from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+from api.permissions import IsProjectMemberPermission 
+
 
 
 
 class ListsInProjectView(generics.ListAPIView):
     authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated,IsProjectMemberPermission]
     serializer_class = serializers.ListsSerializer
 
     def get_queryset(self):
@@ -40,7 +42,8 @@ class ListsInProjectView(generics.ListAPIView):
 class CreateListView(generics.CreateAPIView):
     serializer_class = serializers.ListsSerializer
     authentication_classes=[TokenAuthentication]
-    permission_classes=[IsAuthenticated]
+    permission_classes=[IsAuthenticated,IsProjectMemberPermission]
+
 
     def perform_create(self, serializer):
         

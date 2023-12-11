@@ -65,7 +65,8 @@ class GetUserDataView(APIView):
         if response.status_code == 200:
 
             user_data = response.json()
-            role=user_data['person']['roles'][1]['role']
+            # role=user_data['person']['roles'][1]['role']
+            role='Maintainer'
             username=user_data['username']
             name=user_data['person']['fullName']
             words = name.split()
