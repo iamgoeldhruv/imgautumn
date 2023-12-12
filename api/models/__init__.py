@@ -4,6 +4,7 @@ from .projectmembersmodel import ProjectMembers
 from .listmodel import Lists
 from .carddetailsmodel import CardDetails
 from .carddetailsmodel import SubCard
+from .chatmessagemodel import ChatMessage
 from .commentmodel import Comment
 from django.conf import settings
 from django.db.models.signals import post_save

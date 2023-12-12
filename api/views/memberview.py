@@ -11,8 +11,8 @@ from rest_framework.permissions import IsAuthenticated
 class ProjectMembersCreateView(generics.CreateAPIView):
     queryset = models.ProjectMembers.objects.all()
     serializer_class = serializers.ProjectMembersSerializer
-    # authentication_classes=[TokenAuthentication]
-    # permission_classes=[IsAuthenticated]
+    authentication_classes=[TokenAuthentication]
+    permission_classes=[IsAuthenticated]
 
 
     def create(self, request, *args, **kwargs):
